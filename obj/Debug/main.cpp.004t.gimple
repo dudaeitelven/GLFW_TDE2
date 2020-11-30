@@ -1,0 +1,2336 @@
+main ()
+{
+  int D.105367;
+  bool retval.0;
+  bool retval.1;
+  bool retval.3;
+  bool retval.17;
+  struct vec3 D.100850;
+  struct vec3 D.100868;
+  const struct string D.100891;
+  struct allocator D.100890;
+
+  {
+    struct GLFWwindow * window;
+    struct Shader ourShader;
+    int linhas;
+    int i;
+    char c;
+    char linha[100];
+    char * pch;
+    char * linhaComentario;
+    struct FILE * arqin;
+    float * vertices;
+    unsigned int VBO;
+    unsigned int VAO;
+
+    try
+      {
+        glfwInit ();
+        glfwWindowHint (139266, 3);
+        glfwWindowHint (139267, 3);
+        glfwWindowHint (139272, 204801);
+        window = glfwCreateWindow (800, 600, "OPenGL : TDE 2 - 3D", 0B, 0B);
+        if (window == 0B) goto <D.105365>; else goto <D.105366>;
+        <D.105365>:
+        _1 = std::operator<< <std::char_traits<char> > (&cout, "Failed to create GLFW window");
+        std::basic_ostream<char>::operator<< (_1, endl);
+        glfwTerminate ();
+        D.105367 = -1;
+        // predicted unlikely by early return (on trees) predictor.
+        return D.105367;
+        <D.105366>:
+        glfwMakeContextCurrent (window);
+        glfwSetFramebufferSizeCallback (window, framebuffer_size_callback);
+        _2 = glewInit ();
+        retval.0 = _2 != 0;
+        if (retval.0 != 0) goto <D.105369>; else goto <D.105370>;
+        <D.105369>:
+        _3 = std::operator<< <std::char_traits<char> > (&cout, "Ocorreu um erro iniciando GLEW!");
+        std::basic_ostream<char>::operator<< (_3, endl);
+        goto <D.105371>;
+        <D.105370>:
+        _4 = std::operator<< <std::char_traits<char> > (&cout, "GLEW OK!");
+        std::basic_ostream<char>::operator<< (_4, endl);
+        _5 = glGetString (7938);
+        _6 = std::operator<< <std::char_traits<char> > (&cout, _5);
+        std::basic_ostream<char>::operator<< (_6, endl);
+        <D.105371>:
+        glEnable (2929);
+        Shader::Shader (&ourShader, "vertex.glsl", "fragment.glsl", 0B);
+        linhas = 1;
+        i = 0;
+        arqin = fopen ("casa.csv", "rt");
+        if (arqin == 0B) goto <D.105372>; else goto <D.105373>;
+        <D.105372>:
+        printf ("Erro na abertura de %s %d\n", "casa.csv", 8);
+        exit (0);
+        <D.105373>:
+        <D.105374>:
+        _7 = fread (&c, 1, 1, arqin);
+        retval.1 = _7 != 0;
+        if (retval.1 != 0) goto <D.105376>; else goto <D.100892>;
+        <D.105376>:
+        c.2_8 = c;
+        if (c.2_8 == 10) goto <D.105377>; else goto <D.105378>;
+        <D.105377>:
+        linhas = linhas + 1;
+        goto <D.105379>;
+        <D.105378>:
+        <D.105379>:
+        goto <D.105374>;
+        <D.100892>:
+        printf ("Linhas: %d \n", linhas);
+        _9 = linhas * 8;
+        _10 = (long long unsigned int) _9;
+        _11 = _10 * 4;
+        vertices = malloc (_11);
+        fclose (arqin);
+        i = 0;
+        fopen ("casa.csv", "rt");
+        <D.105380>:
+        _12 = feof (arqin);
+        retval.3 = _12 == 0;
+        if (retval.3 != 0) goto <D.105382>; else goto <D.100894>;
+        <D.105382>:
+        {
+          fgets (&linha, 100, arqin);
+          linhaComentario = strstr (&linha, "//");
+          {
+            if (linhaComentario == 0B) goto <D.105383>; else goto <D.105384>;
+            <D.105383>:
+            {
+              pch = strtok (&linha, ";");
+              <D.105385>:
+              if (pch == 0B) goto <D.100896>; else goto <D.105386>;
+              <D.105386>:
+              {
+                int validarNumerico;
+
+                validarNumerico = strcmp (pch, "\n");
+                if (validarNumerico != 0) goto <D.105387>; else goto <D.105388>;
+                <D.105387>:
+                _13 = atof (pch);
+                _14 = (long long unsigned int) i;
+                _15 = _14 * 4;
+                _16 = vertices + _15;
+                _17 = (float) _13;
+                *_16 = _17;
+                _18 = (long long unsigned int) i;
+                _19 = _18 * 4;
+                _20 = vertices + _19;
+                _21 = *_20;
+                _22 = (double) _21;
+                printf ("vertices[%d]: %f\n ", i, _22);
+                i = i + 1;
+                goto <D.105389>;
+                <D.105388>:
+                <D.105389>:
+                pch = strtok (0B, ";");
+              }
+              goto <D.105385>;
+              <D.100896>:
+            }
+            goto <D.105390>;
+            <D.105384>:
+            <D.105390>:
+          }
+        }
+        goto <D.105380>;
+        <D.100894>:
+        fclose (arqin);
+        __glewGenVertexArrays.4_23 = __glewGenVertexArrays;
+        __glewGenVertexArrays.4_23 (1, &VAO);
+        __glewGenBuffers.5_24 = __glewGenBuffers;
+        __glewGenBuffers.5_24 (1, &VBO);
+        __glewBindVertexArray.6_25 = __glewBindVertexArray;
+        VAO.7_26 = VAO;
+        __glewBindVertexArray.6_25 (VAO.7_26);
+        __glewBindBuffer.8_27 = __glewBindBuffer;
+        VBO.9_28 = VBO;
+        __glewBindBuffer.8_27 (34962, VBO.9_28);
+        __glewBufferData.10_29 = __glewBufferData;
+        _30 = linhas * 8;
+        _31 = (long long unsigned int) _30;
+        _32 = _31 * 4;
+        _33 = (long long int) _32;
+        __glewBufferData.10_29 (34962, _33, vertices, 35044);
+        __glewVertexAttribPointer.11_34 = __glewVertexAttribPointer;
+        __glewVertexAttribPointer.11_34 (0, 3, 5126, 0, 32, 0B);
+        __glewEnableVertexAttribArray.12_35 = __glewEnableVertexAttribArray;
+        __glewEnableVertexAttribArray.12_35 (0);
+        __glewVertexAttribPointer.13_36 = __glewVertexAttribPointer;
+        __glewVertexAttribPointer.13_36 (1, 3, 5126, 0, 32, 12B);
+        __glewEnableVertexAttribArray.14_37 = __glewEnableVertexAttribArray;
+        __glewEnableVertexAttribArray.14_37 (1);
+        __glewVertexAttribPointer.15_38 = __glewVertexAttribPointer;
+        __glewVertexAttribPointer.15_38 (2, 2, 5126, 0, 32, 12B);
+        __glewEnableVertexAttribArray.16_39 = __glewEnableVertexAttribArray;
+        __glewEnableVertexAttribArray.16_39 (2);
+        <D.105391>:
+        _40 = glfwWindowShouldClose (window);
+        retval.17 = _40 == 0;
+        if (retval.17 != 0) goto <D.105393>; else goto <D.100898>;
+        <D.105393>:
+        {
+          struct mat4 model;
+          struct mat4 view;
+          struct mat4 projection;
+          unsigned int modelLoc;
+          unsigned int viewLoc;
+
+          try
+            {
+              processInput (window);
+              glClearColor (0.0, 0.0, 0.0, 1.0e+0);
+              glClear (16640);
+              Shader::use (&ourShader);
+              model.value[0].D.51351.x = 1.0e+0;
+              model.value[0].D.51357.y = 0.0;
+              model.value[0].D.51363.z = 0.0;
+              model.value[0].D.51369.w = 0.0;
+              model.value[1].D.51351.x = 0.0;
+              model.value[1].D.51357.y = 1.0e+0;
+              model.value[1].D.51363.z = 0.0;
+              model.value[1].D.51369.w = 0.0;
+              model.value[2].D.51351.x = 0.0;
+              model.value[2].D.51357.y = 0.0;
+              model.value[2].D.51363.z = 1.0e+0;
+              model.value[2].D.51369.w = 0.0;
+              model.value[3].D.51351.x = 0.0;
+              model.value[3].D.51357.y = 0.0;
+              model.value[3].D.51363.z = 0.0;
+              model.value[3].D.51369.w = 1.0e+0;
+              view.value[0].D.51351.x = 1.0e+0;
+              view.value[0].D.51357.y = 0.0;
+              view.value[0].D.51363.z = 0.0;
+              view.value[0].D.51369.w = 0.0;
+              view.value[1].D.51351.x = 0.0;
+              view.value[1].D.51357.y = 1.0e+0;
+              view.value[1].D.51363.z = 0.0;
+              view.value[1].D.51369.w = 0.0;
+              view.value[2].D.51351.x = 0.0;
+              view.value[2].D.51357.y = 0.0;
+              view.value[2].D.51363.z = 1.0e+0;
+              view.value[2].D.51369.w = 0.0;
+              view.value[3].D.51351.x = 0.0;
+              view.value[3].D.51357.y = 0.0;
+              view.value[3].D.51363.z = 0.0;
+              view.value[3].D.51369.w = 1.0e+0;
+              projection.value[0].D.51351.x = 1.0e+0;
+              projection.value[0].D.51357.y = 0.0;
+              projection.value[0].D.51363.z = 0.0;
+              projection.value[0].D.51369.w = 0.0;
+              projection.value[1].D.51351.x = 0.0;
+              projection.value[1].D.51357.y = 1.0e+0;
+              projection.value[1].D.51363.z = 0.0;
+              projection.value[1].D.51369.w = 0.0;
+              projection.value[2].D.51351.x = 0.0;
+              projection.value[2].D.51357.y = 0.0;
+              projection.value[2].D.51363.z = 1.0e+0;
+              projection.value[2].D.51369.w = 0.0;
+              projection.value[3].D.51351.x = 0.0;
+              projection.value[3].D.51357.y = 0.0;
+              projection.value[3].D.51363.z = 0.0;
+              projection.value[3].D.51369.w = 1.0e+0;
+              glm::vec<3, float, (glm::qualifier)0>::vec (&D.100850, 0.0, -5.0e-1, 0.0);
+              try
+                {
+                  _41 = glfwGetTime ();
+                  _42 = (float) _41;
+                  model = glm::rotate<float, (glm::qualifier)0> (&model, _42, &D.100850);
+                }
+              finally
+                {
+                  D.100850 = {CLOBBER};
+                }
+              glm::vec<3, float, (glm::qualifier)0>::vec (&D.100868, 0.0, 0.0, -3.0e+0);
+              try
+                {
+                  view = glm::translate<float, (glm::qualifier)0> (&view, &D.100868);
+                }
+              finally
+                {
+                  D.100868 = {CLOBBER};
+                }
+              _43 = glm::radians<float> (6.0e+1);
+              projection = glm::perspective<float> (_43, 1.33333337306976318359375e+0, 1.00000001490116119384765625e-1, 1.0e+2);
+              __glewGetUniformLocation.18_44 = __glewGetUniformLocation;
+              _45 = ourShader.ID;
+              _46 = __glewGetUniformLocation.18_44 (_45, "model");
+              modelLoc = (unsigned int) _46;
+              __glewGetUniformLocation.19_47 = __glewGetUniformLocation;
+              _48 = ourShader.ID;
+              _49 = __glewGetUniformLocation.19_47 (_48, "view");
+              viewLoc = (unsigned int) _49;
+              __glewUniformMatrix4fv.20_50 = __glewUniformMatrix4fv;
+              _51 = glm::value_ptr<float, (glm::qualifier)0> (&model);
+              modelLoc.21_52 = (int) modelLoc;
+              __glewUniformMatrix4fv.20_50 (modelLoc.21_52, 1, 0, _51);
+              __glewUniformMatrix4fv.22_53 = __glewUniformMatrix4fv;
+              _54 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (&view, 0);
+              _55 = glm::vec<4, float, (glm::qualifier)0>::operator[] (_54, 0);
+              viewLoc.23_56 = (int) viewLoc;
+              __glewUniformMatrix4fv.22_53 (viewLoc.23_56, 1, 0, _55);
+              std::allocator<char>::allocator (&D.100890);
+              try
+                {
+                  try
+                    {
+                      std::__cxx11::basic_string<char>::basic_string (&D.100891, "projection", &D.100890);
+                      try
+                        {
+                          try
+                            {
+                              Shader::setMat4 (&ourShader, &D.100891, &projection);
+                            }
+                          finally
+                            {
+                              std::__cxx11::basic_string<char>::~basic_string (&D.100891);
+                            }
+                        }
+                      finally
+                        {
+                          D.100891 = {CLOBBER};
+                        }
+                    }
+                  finally
+                    {
+                      std::allocator<char>::~allocator (&D.100890);
+                    }
+                }
+              finally
+                {
+                  D.100890 = {CLOBBER};
+                }
+              __glewBindVertexArray.24_57 = __glewBindVertexArray;
+              VAO.25_58 = VAO;
+              __glewBindVertexArray.24_57 (VAO.25_58);
+              _59 = linhas * 36;
+              glDrawArrays (4, 0, _59);
+              glfwSwapBuffers (window);
+              glfwPollEvents ();
+            }
+          finally
+            {
+              model = {CLOBBER};
+              view = {CLOBBER};
+              projection = {CLOBBER};
+            }
+        }
+        goto <D.105391>;
+        <D.100898>:
+        __glewDeleteVertexArrays.26_60 = __glewDeleteVertexArrays;
+        __glewDeleteVertexArrays.26_60 (1, &VAO);
+        __glewDeleteBuffers.27_61 = __glewDeleteBuffers;
+        __glewDeleteBuffers.27_61 (1, &VBO);
+        glfwTerminate ();
+        D.105367 = 0;
+        return D.105367;
+      }
+    finally
+      {
+        ourShader = {CLOBBER};
+        c = {CLOBBER};
+        linha = {CLOBBER};
+        VBO = {CLOBBER};
+        VAO = {CLOBBER};
+      }
+  }
+  D.105367 = 0;
+  return D.105367;
+}
+
+
+Shader::Shader (struct Shader * const this, const char * vertexPath, const char * fragmentPath, const char * geometryPath)
+{
+  struct __string_type D.95527;
+  struct __string_type D.95528;
+  struct __string_type D.95530;
+  register struct failure * D.95532;
+  struct string D.95533;
+  struct allocator D.95534;
+  struct string D.95535;
+  struct allocator D.95536;
+  struct string D.95538;
+  struct allocator D.95539;
+  struct string D.95540;
+  struct allocator D.95541;
+
+  MEM[(struct  &)this] = {CLOBBER};
+  {
+    {
+      struct string vertexCode;
+      struct string fragmentCode;
+      struct string geometryCode;
+      struct ifstream vShaderFile;
+      struct ifstream fShaderFile;
+      struct ifstream gShaderFile;
+      const char * vShaderCode;
+      const char * fShaderCode;
+      unsigned int vertex;
+      unsigned int fragment;
+      unsigned int geometry;
+
+      try
+        {
+          std::__cxx11::basic_string<char>::basic_string (&vertexCode);
+          try
+            {
+              std::__cxx11::basic_string<char>::basic_string (&fragmentCode);
+              try
+                {
+                  std::__cxx11::basic_string<char>::basic_string (&geometryCode);
+                  try
+                    {
+                      std::basic_ifstream<char>::basic_ifstream (&vShaderFile);
+                      try
+                        {
+                          std::basic_ifstream<char>::basic_ifstream (&fShaderFile);
+                          try
+                            {
+                              std::basic_ifstream<char>::basic_ifstream (&gShaderFile);
+                              try
+                                {
+                                  _1 = std::operator| (4, 1);
+                                  std::basic_ios<char>::exceptions (&vShaderFile.D.92731, _1);
+                                  _2 = std::operator| (4, 1);
+                                  std::basic_ios<char>::exceptions (&fShaderFile.D.92731, _2);
+                                  _3 = std::operator| (4, 1);
+                                  std::basic_ios<char>::exceptions (&gShaderFile.D.92731, _3);
+                                  try
+                                    {
+                                      {
+                                        struct stringstream vShaderStream;
+                                        struct stringstream fShaderStream;
+
+                                        try
+                                          {
+                                            std::basic_ifstream<char>::open (&vShaderFile, vertexPath, 8);
+                                            std::basic_ifstream<char>::open (&fShaderFile, fragmentPath, 8);
+                                            _4 = std::operator| (16, 8);
+                                            std::__cxx11::basic_stringstream<char>::basic_stringstream (&vShaderStream, _4);
+                                            try
+                                              {
+                                                _5 = std::operator| (16, 8);
+                                                std::__cxx11::basic_stringstream<char>::basic_stringstream (&fShaderStream, _5);
+                                                try
+                                                  {
+                                                    _6 = std::basic_ifstream<char>::rdbuf (&vShaderFile);
+                                                    std::basic_ostream<char>::operator<< (&vShaderStream.D.94702.D.89313, _6);
+                                                    _7 = std::basic_ifstream<char>::rdbuf (&fShaderFile);
+                                                    std::basic_ostream<char>::operator<< (&fShaderStream.D.94702.D.89313, _7);
+                                                    std::basic_ifstream<char>::close (&vShaderFile);
+                                                    std::basic_ifstream<char>::close (&fShaderFile);
+                                                    D.95527 = std::__cxx11::basic_stringstream<char>::str (&vShaderStream); [return slot optimization]
+                                                    try
+                                                      {
+                                                        try
+                                                          {
+                                                            std::__cxx11::basic_string<char>::operator= (&vertexCode, &D.95527);
+                                                          }
+                                                        finally
+                                                          {
+                                                            std::__cxx11::basic_string<char>::~basic_string (&D.95527);
+                                                          }
+                                                      }
+                                                    finally
+                                                      {
+                                                        D.95527 = {CLOBBER};
+                                                      }
+                                                    D.95528 = std::__cxx11::basic_stringstream<char>::str (&fShaderStream); [return slot optimization]
+                                                    try
+                                                      {
+                                                        try
+                                                          {
+                                                            std::__cxx11::basic_string<char>::operator= (&fragmentCode, &D.95528);
+                                                          }
+                                                        finally
+                                                          {
+                                                            std::__cxx11::basic_string<char>::~basic_string (&D.95528);
+                                                          }
+                                                      }
+                                                    finally
+                                                      {
+                                                        D.95528 = {CLOBBER};
+                                                      }
+                                                    {
+                                                      if (geometryPath != 0B) goto <D.105421>; else goto <D.105422>;
+                                                      <D.105421>:
+                                                      {
+                                                        struct stringstream gShaderStream;
+
+                                                        try
+                                                          {
+                                                            std::basic_ifstream<char>::open (&gShaderFile, geometryPath, 8);
+                                                            _8 = std::operator| (16, 8);
+                                                            std::__cxx11::basic_stringstream<char>::basic_stringstream (&gShaderStream, _8);
+                                                            try
+                                                              {
+                                                                _9 = std::basic_ifstream<char>::rdbuf (&gShaderFile);
+                                                                std::basic_ostream<char>::operator<< (&gShaderStream.D.94702.D.89313, _9);
+                                                                std::basic_ifstream<char>::close (&gShaderFile);
+                                                                D.95530 = std::__cxx11::basic_stringstream<char>::str (&gShaderStream); [return slot optimization]
+                                                                try
+                                                                  {
+                                                                    try
+                                                                      {
+                                                                        std::__cxx11::basic_string<char>::operator= (&geometryCode, &D.95530);
+                                                                      }
+                                                                    finally
+                                                                      {
+                                                                        std::__cxx11::basic_string<char>::~basic_string (&D.95530);
+                                                                      }
+                                                                  }
+                                                                finally
+                                                                  {
+                                                                    D.95530 = {CLOBBER};
+                                                                  }
+                                                              }
+                                                            finally
+                                                              {
+                                                                std::__cxx11::basic_stringstream<char>::~basic_stringstream (&gShaderStream);
+                                                              }
+                                                          }
+                                                        finally
+                                                          {
+                                                            gShaderStream = {CLOBBER};
+                                                          }
+                                                      }
+                                                      goto <D.105423>;
+                                                      <D.105422>:
+                                                      <D.105423>:
+                                                    }
+                                                  }
+                                                finally
+                                                  {
+                                                    std::__cxx11::basic_stringstream<char>::~basic_stringstream (&fShaderStream);
+                                                  }
+                                              }
+                                            finally
+                                              {
+                                                std::__cxx11::basic_stringstream<char>::~basic_stringstream (&vShaderStream);
+                                              }
+                                          }
+                                        finally
+                                          {
+                                            vShaderStream = {CLOBBER};
+                                            fShaderStream = {CLOBBER};
+                                          }
+                                      }
+                                    }
+                                  catch
+                                    {
+                                      catch (struct failure)
+                                        {
+                                          {
+                                            struct failure & e;
+
+                                            try
+                                              {
+                                                _10 = __builtin_eh_pointer (0);
+                                                D.95532 = __cxa_begin_catch (_10);
+                                                e = D.95532;
+                                                _11 = std::operator<< <std::char_traits<char> > (&cout, "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ");
+                                                std::basic_ostream<char>::operator<< (_11, endl);
+                                              }
+                                            finally
+                                              {
+                                                __cxa_end_catch ();
+                                              }
+                                          }
+                                        }
+                                    }
+                                  _12 = std::__cxx11::basic_string<char>::c_str (&vertexCode);
+                                  vShaderCode = _12;
+                                  _13 = std::__cxx11::basic_string<char>::c_str (&fragmentCode);
+                                  fShaderCode = _13;
+                                  __glewCreateShader.28_14 = __glewCreateShader;
+                                  vertex = __glewCreateShader.28_14 (35633);
+                                  __glewShaderSource.29_15 = __glewShaderSource;
+                                  __glewShaderSource.29_15 (vertex, 1, &vShaderCode, 0B);
+                                  __glewCompileShader.30_16 = __glewCompileShader;
+                                  __glewCompileShader.30_16 (vertex);
+                                  std::allocator<char>::allocator (&D.95534);
+                                  try
+                                    {
+                                      try
+                                        {
+                                          std::__cxx11::basic_string<char>::basic_string (&D.95533, "VERTEX", &D.95534);
+                                          try
+                                            {
+                                              try
+                                                {
+                                                  Shader::checkCompileErrors (this, vertex, &D.95533);
+                                                }
+                                              finally
+                                                {
+                                                  std::__cxx11::basic_string<char>::~basic_string (&D.95533);
+                                                }
+                                            }
+                                          finally
+                                            {
+                                              D.95533 = {CLOBBER};
+                                            }
+                                        }
+                                      finally
+                                        {
+                                          std::allocator<char>::~allocator (&D.95534);
+                                        }
+                                    }
+                                  finally
+                                    {
+                                      D.95534 = {CLOBBER};
+                                    }
+                                  __glewCreateShader.31_17 = __glewCreateShader;
+                                  fragment = __glewCreateShader.31_17 (35632);
+                                  __glewShaderSource.32_18 = __glewShaderSource;
+                                  __glewShaderSource.32_18 (fragment, 1, &fShaderCode, 0B);
+                                  __glewCompileShader.33_19 = __glewCompileShader;
+                                  __glewCompileShader.33_19 (fragment);
+                                  std::allocator<char>::allocator (&D.95536);
+                                  try
+                                    {
+                                      try
+                                        {
+                                          std::__cxx11::basic_string<char>::basic_string (&D.95535, "FRAGMENT", &D.95536);
+                                          try
+                                            {
+                                              try
+                                                {
+                                                  Shader::checkCompileErrors (this, fragment, &D.95535);
+                                                }
+                                              finally
+                                                {
+                                                  std::__cxx11::basic_string<char>::~basic_string (&D.95535);
+                                                }
+                                            }
+                                          finally
+                                            {
+                                              D.95535 = {CLOBBER};
+                                            }
+                                        }
+                                      finally
+                                        {
+                                          std::allocator<char>::~allocator (&D.95536);
+                                        }
+                                    }
+                                  finally
+                                    {
+                                      D.95536 = {CLOBBER};
+                                    }
+                                  {
+                                    if (geometryPath != 0B) goto <D.105424>; else goto <D.105425>;
+                                    <D.105424>:
+                                    {
+                                      const char * gShaderCode;
+
+                                      try
+                                        {
+                                          _20 = std::__cxx11::basic_string<char>::c_str (&geometryCode);
+                                          gShaderCode = _20;
+                                          __glewCreateShader.34_21 = __glewCreateShader;
+                                          geometry = __glewCreateShader.34_21 (36313);
+                                          __glewShaderSource.35_22 = __glewShaderSource;
+                                          __glewShaderSource.35_22 (geometry, 1, &gShaderCode, 0B);
+                                          __glewCompileShader.36_23 = __glewCompileShader;
+                                          __glewCompileShader.36_23 (geometry);
+                                          std::allocator<char>::allocator (&D.95539);
+                                          try
+                                            {
+                                              try
+                                                {
+                                                  std::__cxx11::basic_string<char>::basic_string (&D.95538, "GEOMETRY", &D.95539);
+                                                  try
+                                                    {
+                                                      try
+                                                        {
+                                                          Shader::checkCompileErrors (this, geometry, &D.95538);
+                                                        }
+                                                      finally
+                                                        {
+                                                          std::__cxx11::basic_string<char>::~basic_string (&D.95538);
+                                                        }
+                                                    }
+                                                  finally
+                                                    {
+                                                      D.95538 = {CLOBBER};
+                                                    }
+                                                }
+                                              finally
+                                                {
+                                                  std::allocator<char>::~allocator (&D.95539);
+                                                }
+                                            }
+                                          finally
+                                            {
+                                              D.95539 = {CLOBBER};
+                                            }
+                                        }
+                                      finally
+                                        {
+                                          gShaderCode = {CLOBBER};
+                                        }
+                                    }
+                                    goto <D.105426>;
+                                    <D.105425>:
+                                    <D.105426>:
+                                  }
+                                  __glewCreateProgram.37_24 = __glewCreateProgram;
+                                  _25 = __glewCreateProgram.37_24 ();
+                                  this->ID = _25;
+                                  __glewAttachShader.38_26 = __glewAttachShader;
+                                  _27 = this->ID;
+                                  __glewAttachShader.38_26 (_27, vertex);
+                                  __glewAttachShader.39_28 = __glewAttachShader;
+                                  _29 = this->ID;
+                                  __glewAttachShader.39_28 (_29, fragment);
+                                  if (geometryPath != 0B) goto <D.105427>; else goto <D.105428>;
+                                  <D.105427>:
+                                  __glewAttachShader.40_30 = __glewAttachShader;
+                                  _31 = this->ID;
+                                  __glewAttachShader.40_30 (_31, geometry);
+                                  goto <D.105429>;
+                                  <D.105428>:
+                                  <D.105429>:
+                                  __glewLinkProgram.41_32 = __glewLinkProgram;
+                                  _33 = this->ID;
+                                  __glewLinkProgram.41_32 (_33);
+                                  std::allocator<char>::allocator (&D.95541);
+                                  try
+                                    {
+                                      try
+                                        {
+                                          std::__cxx11::basic_string<char>::basic_string (&D.95540, "PROGRAM", &D.95541);
+                                          try
+                                            {
+                                              try
+                                                {
+                                                  _34 = this->ID;
+                                                  Shader::checkCompileErrors (this, _34, &D.95540);
+                                                }
+                                              finally
+                                                {
+                                                  std::__cxx11::basic_string<char>::~basic_string (&D.95540);
+                                                }
+                                            }
+                                          finally
+                                            {
+                                              D.95540 = {CLOBBER};
+                                            }
+                                        }
+                                      finally
+                                        {
+                                          std::allocator<char>::~allocator (&D.95541);
+                                        }
+                                    }
+                                  finally
+                                    {
+                                      D.95541 = {CLOBBER};
+                                    }
+                                  __glewDeleteShader.42_35 = __glewDeleteShader;
+                                  __glewDeleteShader.42_35 (vertex);
+                                  __glewDeleteShader.43_36 = __glewDeleteShader;
+                                  __glewDeleteShader.43_36 (fragment);
+                                  if (geometryPath != 0B) goto <D.105430>; else goto <D.105431>;
+                                  <D.105430>:
+                                  __glewDeleteShader.44_37 = __glewDeleteShader;
+                                  __glewDeleteShader.44_37 (geometry);
+                                  goto <D.105432>;
+                                  <D.105431>:
+                                  <D.105432>:
+                                }
+                              finally
+                                {
+                                  std::basic_ifstream<char>::~basic_ifstream (&gShaderFile);
+                                }
+                            }
+                          finally
+                            {
+                              std::basic_ifstream<char>::~basic_ifstream (&fShaderFile);
+                            }
+                        }
+                      finally
+                        {
+                          std::basic_ifstream<char>::~basic_ifstream (&vShaderFile);
+                        }
+                    }
+                  finally
+                    {
+                      std::__cxx11::basic_string<char>::~basic_string (&geometryCode);
+                    }
+                }
+              finally
+                {
+                  std::__cxx11::basic_string<char>::~basic_string (&fragmentCode);
+                }
+            }
+          finally
+            {
+              std::__cxx11::basic_string<char>::~basic_string (&vertexCode);
+            }
+        }
+      finally
+        {
+          vertexCode = {CLOBBER};
+          fragmentCode = {CLOBBER};
+          geometryCode = {CLOBBER};
+          vShaderFile = {CLOBBER};
+          fShaderFile = {CLOBBER};
+          gShaderFile = {CLOBBER};
+          vShaderCode = {CLOBBER};
+          fShaderCode = {CLOBBER};
+        }
+    }
+  }
+}
+
+
+std::__cxx11::basic_string<char>::basic_string (struct basic_string * const this)
+{
+  struct allocator D.103060;
+
+  try
+    {
+      MEM[(struct  &)this] = {CLOBBER};
+      {
+        _1 = &this->_M_dataplus;
+        std::allocator<char>::allocator (&D.103060);
+        try
+          {
+            try
+              {
+                _2 = std::__cxx11::basic_string<char>::_M_local_data (this);
+                std::__cxx11::basic_string<char>::_Alloc_hider::_Alloc_hider (_1, _2, &D.103060);
+              }
+            finally
+              {
+                std::allocator<char>::~allocator (&D.103060);
+              }
+          }
+        finally
+          {
+            D.103060 = {CLOBBER};
+          }
+        try
+          {
+            std::__cxx11::basic_string<char>::_M_set_length (this, 0);
+          }
+        catch
+          {
+            _3 = &this->_M_dataplus;
+            std::__cxx11::basic_string<char>::_Alloc_hider::~_Alloc_hider (_3);
+          }
+      }
+    }
+  catch
+    {
+      <<<eh_must_not_throw (terminate)>>>
+    }
+}
+
+
+std::__cxx11::basic_string<char>::_Alloc_hider::_Alloc_hider (struct _Alloc_hider * const this, char * __dat, struct allocator & __a)
+{
+  MEM[(struct  &)this] = {CLOBBER};
+  {
+    _1 = std::move<std::allocator<char>&> (__a);
+    std::allocator<char>::allocator (this, _1);
+    try
+      {
+        this->_M_p = __dat;
+      }
+    catch
+      {
+        std::allocator<char>::~allocator (this);
+      }
+  }
+}
+
+
+std::move<std::allocator<char>&> (struct allocator & __t)
+{
+  struct type & D.105475;
+
+  try
+    {
+      D.105475 = __t;
+      return D.105475;
+    }
+  catch
+    {
+      <<<eh_must_not_throw (terminate)>>>
+    }
+}
+
+
+std::operator| (_Ios_Iostate __a, _Ios_Iostate __b)
+{
+  _Ios_Iostate D.105477;
+
+  D.105477 = __a | __b;
+  return D.105477;
+}
+
+
+std::operator| (_Ios_Openmode __a, _Ios_Openmode __b)
+{
+  _Ios_Openmode D.105479;
+
+  D.105479 = __a | __b;
+  return D.105479;
+}
+
+
+Shader::checkCompileErrors (struct Shader * const this, GLuint shader, struct string & restrict type)
+{
+  bool retval.45;
+  GLint success;
+  GLchar infoLog[1024];
+
+  try
+    {
+      retval.45 = std::operator!=<char, std::char_traits<char>, std::allocator<char> > (type, "PROGRAM");
+      if (retval.45 != 0) goto <D.105482>; else goto <D.105483>;
+      <D.105482>:
+      __glewGetShaderiv.46_1 = __glewGetShaderiv;
+      __glewGetShaderiv.46_1 (shader, 35713, &success);
+      success.47_2 = success;
+      if (success.47_2 == 0) goto <D.105484>; else goto <D.105485>;
+      <D.105484>:
+      __glewGetShaderInfoLog.48_3 = __glewGetShaderInfoLog;
+      __glewGetShaderInfoLog.48_3 (shader, 1024, 0B, &infoLog);
+      _4 = std::operator<< <std::char_traits<char> > (&cout, "ERROR::SHADER_COMPILATION_ERROR of type: ");
+      _5 = std::operator<< <char, std::char_traits<char>, std::allocator<char> > (_4, type);
+      _6 = std::operator<< <std::char_traits<char> > (_5, "\n");
+      _7 = std::operator<< <std::char_traits<char> > (_6, &infoLog);
+      _8 = std::operator<< <std::char_traits<char> > (_7, "\n -- --------------------------------------------------- -- ");
+      std::basic_ostream<char>::operator<< (_8, endl);
+      goto <D.105486>;
+      <D.105485>:
+      <D.105486>:
+      goto <D.105487>;
+      <D.105483>:
+      __glewGetProgramiv.49_9 = __glewGetProgramiv;
+      __glewGetProgramiv.49_9 (shader, 35714, &success);
+      success.50_10 = success;
+      if (success.50_10 == 0) goto <D.105488>; else goto <D.105489>;
+      <D.105488>:
+      __glewGetProgramInfoLog.51_11 = __glewGetProgramInfoLog;
+      __glewGetProgramInfoLog.51_11 (shader, 1024, 0B, &infoLog);
+      _12 = std::operator<< <std::char_traits<char> > (&cout, "ERROR::PROGRAM_LINKING_ERROR of type: ");
+      _13 = std::operator<< <char, std::char_traits<char>, std::allocator<char> > (_12, type);
+      _14 = std::operator<< <std::char_traits<char> > (_13, "\n");
+      _15 = std::operator<< <std::char_traits<char> > (_14, &infoLog);
+      _16 = std::operator<< <std::char_traits<char> > (_15, "\n -- --------------------------------------------------- -- ");
+      std::basic_ostream<char>::operator<< (_16, endl);
+      goto <D.105490>;
+      <D.105489>:
+      <D.105490>:
+      <D.105487>:
+    }
+  finally
+    {
+      success = {CLOBBER};
+      infoLog = {CLOBBER};
+    }
+}
+
+
+std::operator!=<char, std::char_traits<char>, std::allocator<char> > (const struct basic_string & __lhs, const char * __rhs)
+{
+  bool D.105503;
+
+  _1 = std::operator==<char, std::char_traits<char>, std::allocator<char> > (__lhs, __rhs);
+  D.105503 = ~_1;
+  return D.105503;
+}
+
+
+std::operator==<char, std::char_traits<char>, std::allocator<char> > (const struct basic_string & __lhs, const char * __rhs)
+{
+  bool D.105505;
+
+  _1 = std::__cxx11::basic_string<char>::compare (__lhs, __rhs);
+  D.105505 = _1 == 0;
+  return D.105505;
+}
+
+
+Shader::use (struct Shader * const this)
+{
+  __glewUseProgram.52_1 = __glewUseProgram;
+  _2 = this->ID;
+  __glewUseProgram.52_1 (_2);
+}
+
+
+glm::rotate<float, (glm::qualifier)0> (const struct mat & m, float angle, const struct vec & v)
+{
+  struct vec D.103194;
+  struct vec D.103193;
+  struct vec D.103189;
+  struct vec D.103188;
+  struct col_type & D.105508;
+  struct vec D.103199;
+  struct vec D.103198;
+  struct vec D.103197;
+  struct vec D.103196;
+  struct col_type & D.105509;
+  struct vec D.103204;
+  struct vec D.103203;
+  struct vec D.103202;
+  struct vec D.103201;
+  struct col_type & D.105510;
+  struct col_type & D.105511;
+  const float a;
+  const float c;
+  const float s;
+  struct vec axis;
+  struct vec temp;
+  struct mat Rotate;
+  struct mat Result [value-expr: <retval>];
+
+  try
+    {
+      a = angle;
+      c = std::cos (a);
+      s = std::sin (a);
+      axis = glm::normalize<3, float, (glm::qualifier)0> (v); [return slot optimization]
+      _1 = 1.0e+0 - c;
+      temp = glm::operator*<float, (glm::qualifier)0> (_1, &axis); [return slot optimization]
+      _2 = glm::vec<3, float, (glm::qualifier)0>::operator[] (&temp, 0);
+      _3 = *_2;
+      _4 = glm::vec<3, float, (glm::qualifier)0>::operator[] (&axis, 0);
+      _5 = *_4;
+      _6 = _3 * _5;
+      _7 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (&Rotate, 0);
+      _8 = glm::vec<4, float, (glm::qualifier)0>::operator[] (_7, 0);
+      _9 = c + _6;
+      *_8 = _9;
+      _10 = glm::vec<3, float, (glm::qualifier)0>::operator[] (&temp, 0);
+      _11 = *_10;
+      _12 = glm::vec<3, float, (glm::qualifier)0>::operator[] (&axis, 1);
+      _13 = *_12;
+      _14 = _11 * _13;
+      _15 = glm::vec<3, float, (glm::qualifier)0>::operator[] (&axis, 2);
+      _16 = *_15;
+      _17 = s * _16;
+      _18 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (&Rotate, 0);
+      _19 = glm::vec<4, float, (glm::qualifier)0>::operator[] (_18, 1);
+      _20 = _14 + _17;
+      *_19 = _20;
+      _21 = glm::vec<3, float, (glm::qualifier)0>::operator[] (&temp, 0);
+      _22 = *_21;
+      _23 = glm::vec<3, float, (glm::qualifier)0>::operator[] (&axis, 2);
+      _24 = *_23;
+      _25 = _22 * _24;
+      _26 = glm::vec<3, float, (glm::qualifier)0>::operator[] (&axis, 1);
+      _27 = *_26;
+      _28 = s * _27;
+      _29 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (&Rotate, 0);
+      _30 = glm::vec<4, float, (glm::qualifier)0>::operator[] (_29, 2);
+      _31 = _25 - _28;
+      *_30 = _31;
+      _32 = glm::vec<3, float, (glm::qualifier)0>::operator[] (&temp, 1);
+      _33 = *_32;
+      _34 = glm::vec<3, float, (glm::qualifier)0>::operator[] (&axis, 0);
+      _35 = *_34;
+      _36 = _33 * _35;
+      _37 = glm::vec<3, float, (glm::qualifier)0>::operator[] (&axis, 2);
+      _38 = *_37;
+      _39 = s * _38;
+      _40 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (&Rotate, 1);
+      _41 = glm::vec<4, float, (glm::qualifier)0>::operator[] (_40, 0);
+      _42 = _36 - _39;
+      *_41 = _42;
+      _43 = glm::vec<3, float, (glm::qualifier)0>::operator[] (&temp, 1);
+      _44 = *_43;
+      _45 = glm::vec<3, float, (glm::qualifier)0>::operator[] (&axis, 1);
+      _46 = *_45;
+      _47 = _44 * _46;
+      _48 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (&Rotate, 1);
+      _49 = glm::vec<4, float, (glm::qualifier)0>::operator[] (_48, 1);
+      _50 = c + _47;
+      *_49 = _50;
+      _51 = glm::vec<3, float, (glm::qualifier)0>::operator[] (&temp, 1);
+      _52 = *_51;
+      _53 = glm::vec<3, float, (glm::qualifier)0>::operator[] (&axis, 2);
+      _54 = *_53;
+      _55 = _52 * _54;
+      _56 = glm::vec<3, float, (glm::qualifier)0>::operator[] (&axis, 0);
+      _57 = *_56;
+      _58 = s * _57;
+      _59 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (&Rotate, 1);
+      _60 = glm::vec<4, float, (glm::qualifier)0>::operator[] (_59, 2);
+      _61 = _55 + _58;
+      *_60 = _61;
+      _62 = glm::vec<3, float, (glm::qualifier)0>::operator[] (&temp, 2);
+      _63 = *_62;
+      _64 = glm::vec<3, float, (glm::qualifier)0>::operator[] (&axis, 0);
+      _65 = *_64;
+      _66 = _63 * _65;
+      _67 = glm::vec<3, float, (glm::qualifier)0>::operator[] (&axis, 1);
+      _68 = *_67;
+      _69 = s * _68;
+      _70 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (&Rotate, 2);
+      _71 = glm::vec<4, float, (glm::qualifier)0>::operator[] (_70, 0);
+      _72 = _66 + _69;
+      *_71 = _72;
+      _73 = glm::vec<3, float, (glm::qualifier)0>::operator[] (&temp, 2);
+      _74 = *_73;
+      _75 = glm::vec<3, float, (glm::qualifier)0>::operator[] (&axis, 1);
+      _76 = *_75;
+      _77 = _74 * _76;
+      _78 = glm::vec<3, float, (glm::qualifier)0>::operator[] (&axis, 0);
+      _79 = *_78;
+      _80 = s * _79;
+      _81 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (&Rotate, 2);
+      _82 = glm::vec<4, float, (glm::qualifier)0>::operator[] (_81, 1);
+      _83 = _77 - _80;
+      *_82 = _83;
+      _84 = glm::vec<3, float, (glm::qualifier)0>::operator[] (&temp, 2);
+      _85 = *_84;
+      _86 = glm::vec<3, float, (glm::qualifier)0>::operator[] (&axis, 2);
+      _87 = *_86;
+      _88 = _85 * _87;
+      _89 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (&Rotate, 2);
+      _90 = glm::vec<4, float, (glm::qualifier)0>::operator[] (_89, 2);
+      _91 = c + _88;
+      *_90 = _91;
+      _92 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (&Rotate, 0);
+      _93 = glm::vec<4, float, (glm::qualifier)0>::operator[] (_92, 2);
+      _94 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (m, 2);
+      D.103194 = glm::operator*<float, (glm::qualifier)0> (_94, _93); [return slot optimization]
+      try
+        {
+          _95 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (&Rotate, 0);
+          _96 = glm::vec<4, float, (glm::qualifier)0>::operator[] (_95, 1);
+          _97 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (m, 1);
+          D.103189 = glm::operator*<float, (glm::qualifier)0> (_97, _96); [return slot optimization]
+          try
+            {
+              _98 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (&Rotate, 0);
+              _99 = glm::vec<4, float, (glm::qualifier)0>::operator[] (_98, 0);
+              _100 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (m, 0);
+              D.103188 = glm::operator*<float, (glm::qualifier)0> (_100, _99); [return slot optimization]
+              try
+                {
+                  D.103193 = glm::operator+<float, (glm::qualifier)0> (&D.103188, &D.103189); [return slot optimization]
+                  try
+                    {
+                      D.105508 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (&<retval>, 0);
+                      *D.105508 = glm::operator+<float, (glm::qualifier)0> (&D.103193, &D.103194);
+                    }
+                  finally
+                    {
+                      D.103193 = {CLOBBER};
+                    }
+                }
+              finally
+                {
+                  D.103188 = {CLOBBER};
+                }
+            }
+          finally
+            {
+              D.103189 = {CLOBBER};
+            }
+        }
+      finally
+        {
+          D.103194 = {CLOBBER};
+        }
+      _101 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (&Rotate, 1);
+      _102 = glm::vec<4, float, (glm::qualifier)0>::operator[] (_101, 2);
+      _103 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (m, 2);
+      D.103199 = glm::operator*<float, (glm::qualifier)0> (_103, _102); [return slot optimization]
+      try
+        {
+          _104 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (&Rotate, 1);
+          _105 = glm::vec<4, float, (glm::qualifier)0>::operator[] (_104, 1);
+          _106 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (m, 1);
+          D.103197 = glm::operator*<float, (glm::qualifier)0> (_106, _105); [return slot optimization]
+          try
+            {
+              _107 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (&Rotate, 1);
+              _108 = glm::vec<4, float, (glm::qualifier)0>::operator[] (_107, 0);
+              _109 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (m, 0);
+              D.103196 = glm::operator*<float, (glm::qualifier)0> (_109, _108); [return slot optimization]
+              try
+                {
+                  D.103198 = glm::operator+<float, (glm::qualifier)0> (&D.103196, &D.103197); [return slot optimization]
+                  try
+                    {
+                      D.105509 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (&<retval>, 1);
+                      *D.105509 = glm::operator+<float, (glm::qualifier)0> (&D.103198, &D.103199);
+                    }
+                  finally
+                    {
+                      D.103198 = {CLOBBER};
+                    }
+                }
+              finally
+                {
+                  D.103196 = {CLOBBER};
+                }
+            }
+          finally
+            {
+              D.103197 = {CLOBBER};
+            }
+        }
+      finally
+        {
+          D.103199 = {CLOBBER};
+        }
+      _110 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (&Rotate, 2);
+      _111 = glm::vec<4, float, (glm::qualifier)0>::operator[] (_110, 2);
+      _112 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (m, 2);
+      D.103204 = glm::operator*<float, (glm::qualifier)0> (_112, _111); [return slot optimization]
+      try
+        {
+          _113 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (&Rotate, 2);
+          _114 = glm::vec<4, float, (glm::qualifier)0>::operator[] (_113, 1);
+          _115 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (m, 1);
+          D.103202 = glm::operator*<float, (glm::qualifier)0> (_115, _114); [return slot optimization]
+          try
+            {
+              _116 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (&Rotate, 2);
+              _117 = glm::vec<4, float, (glm::qualifier)0>::operator[] (_116, 0);
+              _118 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (m, 0);
+              D.103201 = glm::operator*<float, (glm::qualifier)0> (_118, _117); [return slot optimization]
+              try
+                {
+                  D.103203 = glm::operator+<float, (glm::qualifier)0> (&D.103201, &D.103202); [return slot optimization]
+                  try
+                    {
+                      D.105510 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (&<retval>, 2);
+                      *D.105510 = glm::operator+<float, (glm::qualifier)0> (&D.103203, &D.103204);
+                    }
+                  finally
+                    {
+                      D.103203 = {CLOBBER};
+                    }
+                }
+              finally
+                {
+                  D.103201 = {CLOBBER};
+                }
+            }
+          finally
+            {
+              D.103202 = {CLOBBER};
+            }
+        }
+      finally
+        {
+          D.103204 = {CLOBBER};
+        }
+      _119 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (m, 3);
+      D.105511 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (&<retval>, 3);
+      *D.105511 = MEM[(const struct vec &)_119];
+      return <retval>;
+    }
+  finally
+    {
+      axis = {CLOBBER};
+      temp = {CLOBBER};
+      Rotate = {CLOBBER};
+    }
+}
+
+
+std::cos (float __x)
+{
+  float D.105601;
+
+  D.105601 = __builtin_cosf (__x);
+  return D.105601;
+}
+
+
+std::sin (float __x)
+{
+  float D.105603;
+
+  D.105603 = __builtin_sinf (__x);
+  return D.105603;
+}
+
+
+glm::normalize<3, float, (glm::qualifier)0> (const struct vec & x)
+{
+  <retval> = glm::detail::compute_normalize<3, float, (glm::qualifier)0, false>::call (x); [return slot optimization]
+  return <retval>;
+}
+
+
+glm::detail::compute_normalize<3, float, (glm::qualifier)0, false>::call (const struct vec & v)
+{
+  _1 = glm::dot<3, float, (glm::qualifier)0> (v, v);
+  _2 = glm::inversesqrt<float> (_1);
+  <retval> = glm::operator*<float, (glm::qualifier)0> (v, _2); [return slot optimization]
+  return <retval>;
+}
+
+
+glm::dot<3, float, (glm::qualifier)0> (const struct vec & x, const struct vec & y)
+{
+  float D.105610;
+
+  D.105610 = glm::detail::compute_dot<glm::vec<3, float, (glm::qualifier)0>, float, false>::call (x, y);
+  return D.105610;
+}
+
+
+glm::detail::compute_dot<glm::vec<3, float, (glm::qualifier)0>, float, false>::call (const struct vec & a, const struct vec & b)
+{
+  float D.105613;
+  struct vec tmp;
+
+  try
+    {
+      tmp = glm::operator*<float, (glm::qualifier)0> (a, b); [return slot optimization]
+      _1 = tmp.D.95554.x;
+      _2 = tmp.D.95560.y;
+      _3 = _1 + _2;
+      _4 = tmp.D.95566.z;
+      D.105613 = _3 + _4;
+      return D.105613;
+    }
+  finally
+    {
+      tmp = {CLOBBER};
+    }
+}
+
+
+glm::operator*<float, (glm::qualifier)0> (const struct vec & v1, const struct vec & v2)
+{
+  _1 = v1->D.95566.z;
+  _2 = v2->D.95566.z;
+  _3 = _1 * _2;
+  _4 = v1->D.95560.y;
+  _5 = v2->D.95560.y;
+  _6 = _4 * _5;
+  _7 = v1->D.95554.x;
+  _8 = v2->D.95554.x;
+  _9 = _7 * _8;
+  glm::vec<3, float, (glm::qualifier)0>::vec (&<retval>, _9, _6, _3);
+  return <retval>;
+}
+
+
+glm::inversesqrt<float> (float x)
+{
+  float D.105618;
+
+  _1 = std::sqrt (x);
+  D.105618 = 1.0e+0 / _1;
+  return D.105618;
+}
+
+
+std::sqrt (float __x)
+{
+  float D.105620;
+
+  D.105620 = __builtin_sqrtf (__x);
+  return D.105620;
+}
+
+
+glm::operator*<float, (glm::qualifier)0> (const struct vec & v, float scalar)
+{
+  _1 = v->D.95566.z;
+  _2 = scalar * _1;
+  _3 = v->D.95560.y;
+  _4 = scalar * _3;
+  _5 = v->D.95554.x;
+  _6 = scalar * _5;
+  glm::vec<3, float, (glm::qualifier)0>::vec (&<retval>, _6, _4, _2);
+  return <retval>;
+}
+
+
+glm::operator*<float, (glm::qualifier)0> (float scalar, const struct vec & v)
+{
+  _1 = v->D.95566.z;
+  _2 = scalar * _1;
+  _3 = v->D.95560.y;
+  _4 = scalar * _3;
+  _5 = v->D.95554.x;
+  _6 = scalar * _5;
+  glm::vec<3, float, (glm::qualifier)0>::vec (&<retval>, _6, _4, _2);
+  return <retval>;
+}
+
+
+glm::vec<3, float, (glm::qualifier)0>::operator[] (struct vec * const this, length_type i)
+{
+  bool iftmp.53;
+  float & D.105632;
+
+  if (i >= 0) goto <D.105631>; else goto <D.105627>;
+  <D.105631>:
+  _1 = glm::vec<3, float, (glm::qualifier)0>::length ();
+  if (i < _1) goto <D.105628>; else goto <D.105627>;
+  <D.105627>:
+  _assert ("i >= 0 && i < this->length()", "C:/glm/glm/detail/type_vec3.inl", 170);
+  if (0 != 0) goto <D.105628>; else goto <D.105629>;
+  <D.105628>:
+  iftmp.53 = 1;
+  goto <D.105630>;
+  <D.105629>:
+  iftmp.53 = 0;
+  <D.105630>:
+  switch (i) <default: <D.103182>, case 0: <D.103183>, case 1: <D.103184>, case 2: <D.103185>>
+  <D.103182>:
+  <D.103183>:
+  D.105632 = &this->D.95554.x;
+  return D.105632;
+  <D.103184>:
+  D.105632 = &this->D.95560.y;
+  return D.105632;
+  <D.103185>:
+  D.105632 = &this->D.95566.z;
+  return D.105632;
+}
+
+
+glm::vec<3, float, (glm::qualifier)0>::length ()
+{
+  length_type D.105634;
+
+  D.105634 = 3;
+  return D.105634;
+}
+
+
+glm::operator*<float, (glm::qualifier)0> (const struct vec & v, const float & scalar)
+{
+  struct vec D.53349;
+
+  _1 = *scalar;
+  D.53349 = *v;
+  try
+    {
+      _2 = glm::vec<4, float, (glm::qualifier)0>::operator*=<float> (&D.53349, _1);
+      <retval> = MEM[(const struct vec &)_2];
+      return <retval>;
+    }
+  finally
+    {
+      D.53349 = {CLOBBER};
+    }
+}
+
+
+glm::vec<4, float, (glm::qualifier)0>::operator*=<float> (struct vec * const this, float scalar)
+{
+  struct vec & D.105641;
+  struct vec D.53360;
+
+  glm::vec<4, float, (glm::qualifier)0>::vec (&D.53360, scalar);
+  try
+    {
+      *this = glm::detail::compute_vec4_mul<float, (glm::qualifier)0, false>::call (this, &D.53360);
+      D.105641 = this;
+      return D.105641;
+    }
+  finally
+    {
+      D.53360 = {CLOBBER};
+    }
+}
+
+
+glm::vec<4, float, (glm::qualifier)0>::vec (struct vec * const this, float scalar)
+{
+  MEM[(struct  &)this] = {CLOBBER};
+  {
+    this->D.51351.x = scalar;
+    this->D.51357.y = scalar;
+    this->D.51363.z = scalar;
+    this->D.51369.w = scalar;
+  }
+}
+
+
+glm::detail::compute_vec4_mul<float, (glm::qualifier)0, false>::call (const struct vec & a, const struct vec & b)
+{
+  _1 = a->D.51369.w;
+  _2 = b->D.51369.w;
+  _3 = _1 * _2;
+  _4 = a->D.51363.z;
+  _5 = b->D.51363.z;
+  _6 = _4 * _5;
+  _7 = a->D.51357.y;
+  _8 = b->D.51357.y;
+  _9 = _7 * _8;
+  _10 = a->D.51351.x;
+  _11 = b->D.51351.x;
+  _12 = _10 * _11;
+  glm::vec<4, float, (glm::qualifier)0>::vec (&<retval>, _12, _9, _6, _3);
+  return <retval>;
+}
+
+
+glm::vec<4, float, (glm::qualifier)0>::vec (struct vec * const this, float _x, float _y, float _z, float _w)
+{
+  MEM[(struct  &)this] = {CLOBBER};
+  {
+    this->D.51351.x = _x;
+    this->D.51357.y = _y;
+    this->D.51363.z = _z;
+    this->D.51369.w = _w;
+  }
+}
+
+
+glm::operator+<float, (glm::qualifier)0> (const struct vec & v1, const struct vec & v2)
+{
+  struct vec D.103214;
+
+  D.103214 = *v1;
+  try
+    {
+      _1 = glm::vec<4, float, (glm::qualifier)0>::operator+=<float> (&D.103214, v2);
+      <retval> = MEM[(const struct vec &)_1];
+      return <retval>;
+    }
+  finally
+    {
+      D.103214 = {CLOBBER};
+    }
+}
+
+
+glm::vec<4, float, (glm::qualifier)0>::operator+=<float> (struct vec * const this, const struct vec & v)
+{
+  struct vec & D.105652;
+  struct vec D.103228;
+
+  D.103228 = *v;
+  try
+    {
+      *this = glm::detail::compute_vec4_add<float, (glm::qualifier)0, false>::call (this, &D.103228);
+      D.105652 = this;
+      return D.105652;
+    }
+  finally
+    {
+      D.103228 = {CLOBBER};
+    }
+}
+
+
+glm::detail::compute_vec4_add<float, (glm::qualifier)0, false>::call (const struct vec & a, const struct vec & b)
+{
+  _1 = a->D.51369.w;
+  _2 = b->D.51369.w;
+  _3 = _1 + _2;
+  _4 = a->D.51363.z;
+  _5 = b->D.51363.z;
+  _6 = _4 + _5;
+  _7 = a->D.51357.y;
+  _8 = b->D.51357.y;
+  _9 = _7 + _8;
+  _10 = a->D.51351.x;
+  _11 = b->D.51351.x;
+  _12 = _10 + _11;
+  glm::vec<4, float, (glm::qualifier)0>::vec (&<retval>, _12, _9, _6, _3);
+  return <retval>;
+}
+
+
+glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (const struct mat * const this, length_type i)
+{
+  bool iftmp.54;
+  const struct col_type & D.105662;
+
+  _1 = glm::mat<4, 4, float, (glm::qualifier)0>::length ();
+  if (i < _1) goto <D.105658>; else goto <D.105661>;
+  <D.105661>:
+  _assert ("i < this->length()", "C:/glm/glm/detail/type_mat4x4.inl", 298);
+  if (0 != 0) goto <D.105658>; else goto <D.105659>;
+  <D.105658>:
+  iftmp.54 = 1;
+  goto <D.105660>;
+  <D.105659>:
+  iftmp.54 = 0;
+  <D.105660>:
+  D.105662 = &this->value[i];
+  return D.105662;
+}
+
+
+glm::mat<4, 4, float, (glm::qualifier)0>::length ()
+{
+  length_type D.105664;
+
+  D.105664 = 4;
+  return D.105664;
+}
+
+
+glm::vec<3, float, (glm::qualifier)0>::vec (struct vec * const this, float _x, float _y, float _z)
+{
+  MEM[(struct  &)this] = {CLOBBER};
+  {
+    this->D.95554.x = _x;
+    this->D.95560.y = _y;
+    this->D.95566.z = _z;
+  }
+}
+
+
+glm::translate<float, (glm::qualifier)0> (const struct mat & m, const struct vec & v)
+{
+  struct vec D.103233;
+  struct vec D.103212;
+  struct vec D.103211;
+  struct vec D.103210;
+  struct vec D.103209;
+  struct col_type & D.105667;
+  struct mat Result [value-expr: <retval>];
+
+  <retval> = *m;
+  _1 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (m, 3);
+  _2 = glm::vec<3, float, (glm::qualifier)0>::operator[] (v, 2);
+  _3 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (m, 2);
+  D.103212 = glm::operator*<float, (glm::qualifier)0> (_3, _2); [return slot optimization]
+  try
+    {
+      _4 = glm::vec<3, float, (glm::qualifier)0>::operator[] (v, 1);
+      _5 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (m, 1);
+      D.103210 = glm::operator*<float, (glm::qualifier)0> (_5, _4); [return slot optimization]
+      try
+        {
+          _6 = glm::vec<3, float, (glm::qualifier)0>::operator[] (v, 0);
+          _7 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (m, 0);
+          D.103209 = glm::operator*<float, (glm::qualifier)0> (_7, _6); [return slot optimization]
+          try
+            {
+              D.103211 = glm::operator+<float, (glm::qualifier)0> (&D.103209, &D.103210); [return slot optimization]
+              try
+                {
+                  D.103233 = glm::operator+<float, (glm::qualifier)0> (&D.103211, &D.103212); [return slot optimization]
+                  try
+                    {
+                      D.105667 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (&<retval>, 3);
+                      *D.105667 = glm::operator+<float, (glm::qualifier)0> (&D.103233, _1);
+                    }
+                  finally
+                    {
+                      D.103233 = {CLOBBER};
+                    }
+                }
+              finally
+                {
+                  D.103211 = {CLOBBER};
+                }
+            }
+          finally
+            {
+              D.103209 = {CLOBBER};
+            }
+        }
+      finally
+        {
+          D.103210 = {CLOBBER};
+        }
+    }
+  finally
+    {
+      D.103212 = {CLOBBER};
+    }
+  return <retval>;
+}
+
+
+glm::vec<3, float, (glm::qualifier)0>::operator[] (const struct vec * const this, length_type i)
+{
+  bool iftmp.55;
+  const float & D.105688;
+
+  if (i >= 0) goto <D.105687>; else goto <D.105683>;
+  <D.105687>:
+  _1 = glm::vec<3, float, (glm::qualifier)0>::length ();
+  if (i < _1) goto <D.105684>; else goto <D.105683>;
+  <D.105683>:
+  _assert ("i >= 0 && i < this->length()", "C:/glm/glm/detail/type_vec3.inl", 186);
+  if (0 != 0) goto <D.105684>; else goto <D.105685>;
+  <D.105684>:
+  iftmp.55 = 1;
+  goto <D.105686>;
+  <D.105685>:
+  iftmp.55 = 0;
+  <D.105686>:
+  switch (i) <default: <D.103140>, case 0: <D.103141>, case 1: <D.103142>, case 2: <D.103143>>
+  <D.103140>:
+  <D.103141>:
+  D.105688 = &this->D.95554.x;
+  return D.105688;
+  <D.103142>:
+  D.105688 = &this->D.95560.y;
+  return D.105688;
+  <D.103143>:
+  D.105688 = &this->D.95566.z;
+  return D.105688;
+}
+
+
+glm::radians<float> (float degrees)
+{
+  float D.105690;
+
+  D.105690 = degrees * 1.745329238474369049072265625e-2;
+  return D.105690;
+}
+
+
+glm::perspective<float> (float fovy, float aspect, float zNear, float zFar)
+{
+  <retval> = glm::perspectiveRH_NO<float> (fovy, aspect, zNear, zFar); [return slot optimization]
+  return <retval>;
+}
+
+
+glm::perspectiveRH_NO<float> (float fovy, float aspect, float zNear, float zFar)
+{
+  bool iftmp.56;
+  const float tanHalfFovy;
+  struct mat Result [value-expr: <retval>];
+
+  try
+    {
+      _1 = std::numeric_limits<float>::epsilon ();
+      _2 = aspect - _1;
+      _3 = glm::abs<float> (_2);
+      if (_3 > 0.0) goto <D.105696>; else goto <D.105699>;
+      <D.105699>:
+      _assert ("abs(aspect - std::numeric_limits<T>::epsilon()) > static_cast<T>(0)", "C:/glm/glm/ext/matrix_clip_space.inl", 251);
+      if (0 != 0) goto <D.105696>; else goto <D.105697>;
+      <D.105696>:
+      iftmp.56 = 1;
+      goto <D.105698>;
+      <D.105697>:
+      iftmp.56 = 0;
+      <D.105698>:
+      _4 = fovy / 2.0e+0;
+      _5 = std::tan (_4);
+      tanHalfFovy = _5;
+      <retval> = {};
+      tanHalfFovy.57_6 = tanHalfFovy;
+      _7 = aspect * tanHalfFovy.57_6;
+      _8 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (&<retval>, 0);
+      _9 = glm::vec<4, float, (glm::qualifier)0>::operator[] (_8, 0);
+      _10 = 1.0e+0 / _7;
+      *_9 = _10;
+      tanHalfFovy.58_11 = tanHalfFovy;
+      _12 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (&<retval>, 1);
+      _13 = glm::vec<4, float, (glm::qualifier)0>::operator[] (_12, 1);
+      _14 = 1.0e+0 / tanHalfFovy.58_11;
+      *_13 = _14;
+      _15 = zFar + zNear;
+      _16 = -_15;
+      _17 = zFar - zNear;
+      _18 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (&<retval>, 2);
+      _19 = glm::vec<4, float, (glm::qualifier)0>::operator[] (_18, 2);
+      _20 = _16 / _17;
+      *_19 = _20;
+      _21 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (&<retval>, 2);
+      _22 = glm::vec<4, float, (glm::qualifier)0>::operator[] (_21, 3);
+      *_22 = -1.0e+0;
+      _23 = zFar * 2.0e+0;
+      _24 = zNear * _23;
+      _25 = -_24;
+      _26 = zFar - zNear;
+      _27 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (&<retval>, 3);
+      _28 = glm::vec<4, float, (glm::qualifier)0>::operator[] (_27, 2);
+      _29 = _25 / _26;
+      *_28 = _29;
+      return <retval>;
+    }
+  finally
+    {
+      tanHalfFovy = {CLOBBER};
+    }
+}
+
+
+std::numeric_limits<float>::epsilon ()
+{
+  float D.105714;
+
+  try
+    {
+      D.105714 = 1.1920928955078125e-7;
+      return D.105714;
+    }
+  catch
+    {
+      <<<eh_must_not_throw (terminate)>>>
+    }
+}
+
+
+glm::abs<float> (float x)
+{
+  float D.105716;
+
+  D.105716 = glm::detail::compute_abs<float, true>::call (x);
+  return D.105716;
+}
+
+
+glm::detail::compute_abs<float, true>::call (float x)
+{
+  float D.105718;
+  float iftmp.59;
+
+  if (x >= 0.0) goto <D.105720>; else goto <D.105721>;
+  <D.105720>:
+  iftmp.59 = x;
+  goto <D.105722>;
+  <D.105721>:
+  iftmp.59 = -x;
+  <D.105722>:
+  D.105718 = iftmp.59;
+  return D.105718;
+}
+
+
+std::tan (float __x)
+{
+  float D.105724;
+
+  D.105724 = __builtin_tanf (__x);
+  return D.105724;
+}
+
+
+glm::value_ptr<float, (glm::qualifier)0> (struct mat & m)
+{
+  float * D.105726;
+
+  _1 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (m, 0);
+  D.105726 = &_1->D.51351.x;
+  return D.105726;
+}
+
+
+glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (struct mat * const this, length_type i)
+{
+  bool iftmp.60;
+  struct col_type & D.105734;
+
+  _1 = glm::mat<4, 4, float, (glm::qualifier)0>::length ();
+  if (i < _1) goto <D.105730>; else goto <D.105733>;
+  <D.105733>:
+  _assert ("i < this->length()", "C:/glm/glm/detail/type_mat4x4.inl", 291);
+  if (0 != 0) goto <D.105730>; else goto <D.105731>;
+  <D.105730>:
+  iftmp.60 = 1;
+  goto <D.105732>;
+  <D.105731>:
+  iftmp.60 = 0;
+  <D.105732>:
+  D.105734 = &this->value[i];
+  return D.105734;
+}
+
+
+glm::vec<4, float, (glm::qualifier)0>::operator[] (struct vec * const this, length_type i)
+{
+  bool iftmp.61;
+  float & D.105742;
+
+  if (i >= 0) goto <D.105741>; else goto <D.105737>;
+  <D.105741>:
+  _1 = glm::vec<4, float, (glm::qualifier)0>::length ();
+  if (i < _1) goto <D.105738>; else goto <D.105737>;
+  <D.105737>:
+  _assert ("i >= 0 && i < this->length()", "C:/glm/glm/detail/type_vec4.inl", 479);
+  if (0 != 0) goto <D.105738>; else goto <D.105739>;
+  <D.105738>:
+  iftmp.61 = 1;
+  goto <D.105740>;
+  <D.105739>:
+  iftmp.61 = 0;
+  <D.105740>:
+  switch (i) <default: <D.103246>, case 0: <D.103247>, case 1: <D.103248>, case 2: <D.103249>, case 3: <D.103250>>
+  <D.103246>:
+  <D.103247>:
+  D.105742 = &this->D.51351.x;
+  return D.105742;
+  <D.103248>:
+  D.105742 = &this->D.51357.y;
+  return D.105742;
+  <D.103249>:
+  D.105742 = &this->D.51363.z;
+  return D.105742;
+  <D.103250>:
+  D.105742 = &this->D.51369.w;
+  return D.105742;
+}
+
+
+glm::vec<4, float, (glm::qualifier)0>::length ()
+{
+  length_type D.105744;
+
+  D.105744 = 4;
+  return D.105744;
+}
+
+
+std::allocator<char>::allocator (struct allocator * const this)
+{
+  try
+    {
+      {
+        __gnu_cxx::new_allocator<char>::new_allocator (this);
+        try
+          {
+
+          }
+        catch
+          {
+            __gnu_cxx::new_allocator<char>::~new_allocator (this);
+          }
+      }
+    }
+  catch
+    {
+      <<<eh_filter (NULL)>>>
+        {
+          
+            _1 = __builtin_eh_pointer (0);
+            __cxa_call_unexpected (_1);
+          
+        }
+    }
+}
+
+
+__gnu_cxx::new_allocator<char>::new_allocator (struct new_allocator * const this)
+{
+  try
+    {
+      {
+
+      }
+    }
+  catch
+    {
+      <<<eh_must_not_throw (terminate)>>>
+    }
+}
+
+
+std::__cxx11::basic_string<char>::basic_string (struct basic_string * const this, const char * __s, const struct allocator & __a)
+{
+  const char * iftmp.62;
+
+  MEM[(struct  &)this] = {CLOBBER};
+  {
+    _1 = &this->_M_dataplus;
+    _2 = std::__cxx11::basic_string<char>::_M_local_data (this);
+    std::__cxx11::basic_string<char>::_Alloc_hider::_Alloc_hider (_1, _2, __a);
+    try
+      {
+        if (__s != 0B) goto <D.105747>; else goto <D.105748>;
+        <D.105747>:
+        _3 = std::char_traits<char>::length (__s);
+        iftmp.62 = __s + _3;
+        goto <D.105749>;
+        <D.105748>:
+        iftmp.62 = __s + 18446744073709551615;
+        <D.105749>:
+        std::__cxx11::basic_string<char>::_M_construct<const char*> (this, __s, iftmp.62);
+      }
+    catch
+      {
+        _4 = &this->_M_dataplus;
+        std::__cxx11::basic_string<char>::_Alloc_hider::~_Alloc_hider (_4);
+      }
+  }
+}
+
+
+std::__cxx11::basic_string<char>::_Alloc_hider::_Alloc_hider (struct _Alloc_hider * const this, char * __dat, const struct allocator & __a)
+{
+  MEM[(struct  &)this] = {CLOBBER};
+  {
+    std::allocator<char>::allocator (this, __a);
+    try
+      {
+        this->_M_p = __dat;
+      }
+    catch
+      {
+        std::allocator<char>::~allocator (this);
+      }
+  }
+}
+
+
+std::char_traits<char>::length (const char_type * __s)
+{
+  size_t D.105752;
+
+  D.105752 = __builtin_strlen (__s);
+  return D.105752;
+}
+
+
+std::__cxx11::basic_string<char>::_M_construct<const char*> (struct basic_string * const this, const char * __beg, const char * __end)
+{
+  struct _Integral D.103460;
+  struct __false_type D.105754;
+  typedef struct _Integral _Integral;
+
+  try
+    {
+      std::__cxx11::basic_string<char>::_M_construct_aux<const char*> (this, __beg, __end, D.105754);
+    }
+  finally
+    {
+      D.103460 = {CLOBBER};
+    }
+}
+
+
+std::__cxx11::basic_string<char>::_M_construct_aux<const char*> (struct basic_string * const this, const char * __beg, const char * __end, struct __false_type D.103498)
+{
+  struct forward_iterator_tag D.104043;
+  struct _Tag D.104023;
+  struct forward_iterator_tag D.105756;
+  typedef struct _Tag _Tag;
+
+  try
+    {
+      _1 = &D.104023;
+      std::__cxx11::basic_string<char>::_M_construct<const char*> (this, __beg, __end, D.105756);
+    }
+  finally
+    {
+      D.104023 = {CLOBBER};
+    }
+}
+
+
+std::__cxx11::basic_string<char>::_M_construct<const char*> (struct basic_string * const this, const char * __beg, const char * __end, struct forward_iterator_tag D.104037)
+{
+  bool retval.63;
+  bool iftmp.64;
+  size_type __dnew;
+
+  try
+    {
+      _1 = __gnu_cxx::__is_null_pointer<const char> (__beg);
+      if (_1 != 0) goto <D.105762>; else goto <D.105760>;
+      <D.105762>:
+      if (__beg != __end) goto <D.105763>; else goto <D.105760>;
+      <D.105763>:
+      iftmp.64 = 1;
+      goto <D.105761>;
+      <D.105760>:
+      iftmp.64 = 0;
+      <D.105761>:
+      retval.63 = iftmp.64;
+      if (retval.63 != 0) goto <D.105764>; else goto <D.105765>;
+      <D.105764>:
+      std::__throw_logic_error ("basic_string::_M_construct null not valid");
+      <D.105765>:
+      _2 = std::distance<const char*> (__beg, __end);
+      _3 = (long long unsigned int) _2;
+      __dnew = _3;
+      __dnew.65_4 = __dnew;
+      if (__dnew.65_4 > 15) goto <D.105766>; else goto <D.105767>;
+      <D.105766>:
+      _5 = std::__cxx11::basic_string<char>::_M_create (this, &__dnew, 0);
+      std::__cxx11::basic_string<char>::_M_data (this, _5);
+      __dnew.66_6 = __dnew;
+      std::__cxx11::basic_string<char>::_M_capacity (this, __dnew.66_6);
+      goto <D.105768>;
+      <D.105767>:
+      <D.105768>:
+      try
+        {
+          _7 = std::__cxx11::basic_string<char>::_M_data (this);
+          std::__cxx11::basic_string<char>::_S_copy_chars (_7, __beg, __end);
+        }
+      catch
+        {
+          catch (NULL)
+            {
+              try
+                {
+                  _8 = __builtin_eh_pointer (0);
+                  __cxa_begin_catch (_8);
+                  std::__cxx11::basic_string<char>::_M_dispose (this);
+                  __cxa_rethrow ();
+                }
+              finally
+                {
+                  __cxa_end_catch ();
+                }
+            }
+        }
+      __dnew.67_9 = __dnew;
+      std::__cxx11::basic_string<char>::_M_set_length (this, __dnew.67_9);
+    }
+  finally
+    {
+      __dnew = {CLOBBER};
+    }
+}
+
+
+__gnu_cxx::__is_null_pointer<const char> (const char * __ptr)
+{
+  bool D.105776;
+
+  D.105776 = __ptr == 0B;
+  return D.105776;
+}
+
+
+std::distance<const char*> (const char * __first, const char * __last)
+{
+  difference_type D.105778;
+  struct iterator_category D.105183;
+  struct random_access_iterator_tag D.105779;
+
+  std::__iterator_category<const char*> (&__first);
+  try
+    {
+      __first.68_1 = __first;
+      D.105778 = std::__distance<const char*> (__first.68_1, __last, D.105779);
+      return D.105778;
+    }
+  finally
+    {
+      D.105183 = {CLOBBER};
+    }
+}
+
+
+std::__iterator_category<const char*> (const char * const & D.105182)
+{
+  struct iterator_category D.105782;
+
+  return D.105782;
+}
+
+
+std::__distance<const char*> (const char * __first, const char * __last, struct random_access_iterator_tag D.105187)
+{
+  difference_type D.105784;
+
+  D.105784 = __last - __first;
+  return D.105784;
+}
+
+
+std::__cxx11::basic_string<char>::_Alloc_hider::~_Alloc_hider (struct _Alloc_hider * const this)
+{
+  {
+    try
+      {
+        try
+          {
+
+          }
+        finally
+          {
+            std::allocator<char>::~allocator (this);
+          }
+      }
+    finally
+      {
+        MEM[(struct  &)this] = {CLOBBER};
+      }
+  }
+  <D.102010>:
+}
+
+
+Shader::setMat4 (const struct Shader * const this, const struct string & name, const struct mat4 & mat)
+{
+  __glewUniformMatrix4fv.69_1 = __glewUniformMatrix4fv;
+  _2 = glm::mat<4, 4, float, (glm::qualifier)0>::operator[] (mat, 0);
+  _3 = glm::vec<4, float, (glm::qualifier)0>::operator[] (_2, 0);
+  __glewGetUniformLocation.70_4 = __glewGetUniformLocation;
+  _5 = std::__cxx11::basic_string<char>::c_str (name);
+  _6 = this->ID;
+  _7 = __glewGetUniformLocation.70_4 (_6, _5);
+  __glewUniformMatrix4fv.69_1 (_7, 1, 0, _3);
+}
+
+
+glm::vec<4, float, (glm::qualifier)0>::operator[] (const struct vec * const this, length_type i)
+{
+  bool iftmp.71;
+  const float & D.105795;
+
+  if (i >= 0) goto <D.105794>; else goto <D.105790>;
+  <D.105794>:
+  _1 = glm::vec<4, float, (glm::qualifier)0>::length ();
+  if (i < _1) goto <D.105791>; else goto <D.105790>;
+  <D.105790>:
+  _assert ("i >= 0 && i < this->length()", "C:/glm/glm/detail/type_vec4.inl", 497);
+  if (0 != 0) goto <D.105791>; else goto <D.105792>;
+  <D.105791>:
+  iftmp.71 = 1;
+  goto <D.105793>;
+  <D.105792>:
+  iftmp.71 = 0;
+  <D.105793>:
+  switch (i) <default: <D.103147>, case 0: <D.103148>, case 1: <D.103149>, case 2: <D.103150>, case 3: <D.103151>>
+  <D.103147>:
+  <D.103148>:
+  D.105795 = &this->D.51351.x;
+  return D.105795;
+  <D.103149>:
+  D.105795 = &this->D.51357.y;
+  return D.105795;
+  <D.103150>:
+  D.105795 = &this->D.51363.z;
+  return D.105795;
+  <D.103151>:
+  D.105795 = &this->D.51369.w;
+  return D.105795;
+}
+
+
+std::__cxx11::basic_string<char>::~basic_string (struct basic_string * const this)
+{
+  try
+    {
+      {
+        try
+          {
+            try
+              {
+                std::__cxx11::basic_string<char>::_M_dispose (this);
+              }
+            finally
+              {
+                _1 = &this->_M_dataplus;
+                std::__cxx11::basic_string<char>::_Alloc_hider::~_Alloc_hider (_1);
+              }
+          }
+        finally
+          {
+            MEM[(struct  &)this] = {CLOBBER};
+          }
+      }
+      <D.102013>:
+    }
+  catch
+    {
+      <<<eh_must_not_throw (terminate)>>>
+    }
+}
+
+
+std::allocator<char>::~allocator (struct allocator * const this)
+{
+  try
+    {
+      {
+        try
+          {
+
+          }
+        finally
+          {
+            __gnu_cxx::new_allocator<char>::~new_allocator (this);
+          }
+      }
+      <D.102616>:
+    }
+  catch
+    {
+      <<<eh_filter (NULL)>>>
+        {
+          
+            _1 = __builtin_eh_pointer (0);
+            __cxa_call_unexpected (_1);
+          
+        }
+    }
+}
+
+
+__gnu_cxx::new_allocator<char>::~new_allocator (struct new_allocator * const this)
+{
+  try
+    {
+      {
+
+      }
+      <D.103421>:
+    }
+  catch
+    {
+      <<<eh_must_not_throw (terminate)>>>
+    }
+}
+
+
+processInput (struct GLFWwindow * window)
+{
+  bool retval.72;
+
+  _1 = glfwGetKey (window, 256);
+  retval.72 = _1 == 1;
+  if (retval.72 != 0) goto <D.105798>; else goto <D.105799>;
+  <D.105798>:
+  glfwSetWindowShouldClose (window, 1);
+  goto <D.105800>;
+  <D.105799>:
+  <D.105800>:
+}
+
+
+framebuffer_size_callback (struct GLFWwindow * window, int width, int height)
+{
+  glViewport (0, 0, width, height);
+}
+
+
+__static_initialization_and_destruction_0 (int __initialize_p, int __priority)
+{
+  if (__initialize_p == 1) goto <D.105802>; else goto <D.105803>;
+  <D.105802>:
+  if (__priority == 65535) goto <D.105804>; else goto <D.105805>;
+  <D.105804>:
+  std::ios_base::Init::Init (&__ioinit);
+  atexit (__tcf_0);
+  goto <D.105806>;
+  <D.105805>:
+  <D.105806>:
+  goto <D.105807>;
+  <D.105803>:
+  <D.105807>:
+}
+
+
+__tcf_0 ()
+{
+  std::ios_base::Init::~Init (&__ioinit);
+}
+
+
+_GLOBAL__sub_I_main ()
+{
+  __static_initialization_and_destruction_0 (1, 65535);
+}
+
+
